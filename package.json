@@ -1,0 +1,26 @@
+{
+  "name": "dubai-landmarks",
+  "version": "1.0.0",
+  "description": "Demo Showcase of Dubai Landmarks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitsos1os/dubai-landmarks.git"
+  },
+  "keywords": [
+    "parse",
+    "angular",
+    "dubai",
+    "landmarks",
+    "parse-community"
+  ],
+  "author": "mitsos1os",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mitsos1os/dubai-landmarks/issues"
+  },
+  "homepage": "https://github.com/mitsos1os/dubai-landmarks#readme"
+}
