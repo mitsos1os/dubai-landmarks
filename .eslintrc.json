@@ -15,6 +15,7 @@
         }
     },
     "rules": {
-        "strict": ["error", "safe"]
+        "strict": ["error", "safe"],
+        "import/order": "off"
     }
 }
