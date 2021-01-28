@@ -41,8 +41,15 @@ const DEFAULT_PROTOCOL = 'http';
  * Default API Prefix for serving Parse API
  * @type {string}
  */
-const DEFAULT_PARSE_PREFIX = 'parse';
+const DEFAULT_PARSE_PREFIX = '/parse';
+/**
+ * Default mount path for Parse Dashboard
+ * @type {string}
+ */
+const DEFAULT_PARSE_DASHBOARD_PATH = '/dashboard';
 const DEFAULT_APP_NAME = 'Dubai Landmarks';
+const DEFAULT_DASHBOARD_USER_ID = '';
+const DEFAULT_DASHBOARD_USER_PASS = 'password_pou_den_spaei';
 
 /* ------- Environment variables ----------- */
 const {
@@ -50,7 +57,7 @@ const {
     APP_ID: appId,
     MASTER_KEY: masterKey,
     DB_URI: databaseURI = DEFAULT_DB_URI,
-    SERVER_URL: serverUrl,
+    SERVER_URL: serverURL,
     PUBLIC_SERVER_URL: publicServerURL,
     SERVER_PORT,
     FILE_KEY: fileKey,
@@ -60,6 +67,10 @@ const {
     SERVER_HOST: serverHost = DEFAULT_SERVER_HOST,
     SERVER_PROTOCOL: serverProtocol = DEFAULT_PROTOCOL,
     PARSE_PREFIX: parsePrefix = DEFAULT_PARSE_PREFIX,
+    PARSE_DASHBOARD_PATH: parseDashboardPath = DEFAULT_PARSE_DASHBOARD_PATH,
+    DASHBOARD_ENABLE: dashboardEnable,
+    PARSE_DASHBOARD_USER_ID: dashboardUserId = DEFAULT_DASHBOARD_USER_ID,
+    PARSE_DASHBOARD_USER_PASSWORD: dashboardPassword = DEFAULT_DASHBOARD_USER_PASS,
   },
 } = process;
 
@@ -68,49 +79,82 @@ const {
  *
  * @param {string} envVar
  * @param {number} defaultValue
- * @returns {number}
+ * @param {string} varName
+ * @returns {?number}
  */
-const parseIntEnvironment = (envVar, defaultValue) => {
-  assert(
-    envVar && typeof envVar === 'string',
-    'Invalid environment variable to parse as int'
-  );
+const parseIntEnvironment = (envVar, defaultValue, varName) => {
   assert(
     Number.isFinite(defaultValue),
     'Invalid default value for integer environment variable'
   );
   const result = (envVar && parseInt(envVar, 10)) || defaultValue;
-  assert(!Number.isNaN(result), `${envVar} cannot be converted to integer`);
+  assert(
+    !Number.isNaN(result),
+    `Env variable ${varName} cannot be converted to integer`
+  );
   return result;
+};
+
+/**
+ * Accept an environment variable and parse it to its boolean equivalent. True
+ * can be produced from either `true` or `TRUE` as values
+ *
+ * @param {string} [envVar]
+ * @param {boolean} [defaultValue = false] - The default value to return
+ * @returns {boolean}
+ */
+const parseBooleanEnvironment = (envVar, defaultValue = false) => {
+  assert.strictEqual(
+    typeof defaultValue,
+    'boolean',
+    'Invalid default boolean value'
+  );
+  return typeof envVar === 'string' && envVar.toLowerCase() === 'true'
+    ? true
+    : defaultValue;
 };
 
 const genericConfig = {
   serverHost,
-  serverPort: parseIntEnvironment(SERVER_PORT, DEFAULT_PORT),
+  serverPort: parseIntEnvironment(SERVER_PORT, DEFAULT_PORT, 'SERVER_PORT'),
   serverProtocol,
   parsePrefix,
-  photoWidth: parseIntEnvironment(PHOTO_WIDTH, DEFAULT_PHOTO_WIDTH),
-  photoHeight: parseIntEnvironment(PHOTO_HEIGHT, DEFAULT_PHOTO_HEIGHT),
+  parseDashboardPath,
+  dashboardEnable: parseBooleanEnvironment(dashboardEnable, true),
+  photoWidth: parseIntEnvironment(
+    PHOTO_WIDTH,
+    DEFAULT_PHOTO_WIDTH,
+    'PHOTO_WIDTH'
+  ),
+  photoHeight: parseIntEnvironment(
+    PHOTO_HEIGHT,
+    DEFAULT_PHOTO_HEIGHT,
+    'PHOTO_HEIGHT'
+  ),
 };
 
 /* ------ Config value generation ------ */
-const finalServerUrl = `${serverProtocol}://${serverHost}:${genericConfig.serverPort}/${parsePrefix}`;
+const finalServerUrl = `${serverProtocol}://${serverHost}:${genericConfig.serverPort}${parsePrefix}`;
 
 const config = {
   parse: {
     appId,
     masterKey,
     databaseURI,
-    serverUrl: serverUrl || finalServerUrl,
+    serverURL: serverURL || finalServerUrl,
     publicServerURL: publicServerURL || finalServerUrl,
     fileKey,
     appName,
   },
   generic: genericConfig,
+  dashboard: {
+    dashboardUserId,
+    dashboardPassword,
+  },
 };
 /* ------- Validation/conversion of values ---------*/
 // required values for parse config
-['appId', 'masterKey', 'databaseURI', 'serverUrl', 'appName'].forEach(
+['appId', 'masterKey', 'databaseURI', 'serverURL', 'appName'].forEach(
   (prop) => {
     const configValue = config.parse[prop];
     assert(

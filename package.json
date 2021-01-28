@@ -4,6 +4,7 @@
   "description": "Demo Showcase of Dubai Landmarks",
   "main": "index.js",
   "scripts": {
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/mitsos1os/dubai-landmarks#readme",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "parse-dashboard": "^2.1.0",
