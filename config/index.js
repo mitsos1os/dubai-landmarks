@@ -28,11 +28,20 @@ const DEFAULT_PHOTO_HEIGHT = 250;
  */
 const DEFAULT_DB_URI = 'mongodb://localhost:27017/dubai-landmarks';
 /**
- * Default server url
+ * Default host where parse server will run
  * @type {string}
  */
-const DEFAULT_SERVER_URL = 'http://localhost:1337/parse';
-
+const DEFAULT_SERVER_HOST = 'localhost';
+/**
+ * Default protocol used by parse server
+ * @type {string}
+ */
+const DEFAULT_PROTOCOL = 'http';
+/**
+ * Default API Prefix for serving Parse API
+ * @type {string}
+ */
+const DEFAULT_PARSE_PREFIX = 'parse';
 const DEFAULT_APP_NAME = 'Dubai Landmarks';
 
 /* ------- Environment variables ----------- */
@@ -40,14 +49,17 @@ const {
   env: {
     APP_ID: appId,
     MASTER_KEY: masterKey,
-    DB_URI: databaseUri = DEFAULT_DB_URI,
-    SERVER_URL: serverUrl = DEFAULT_SERVER_URL,
-    PUBLIC_SERVER_URL: publicServerUrl = DEFAULT_SERVER_URL,
+    DB_URI: databaseURI = DEFAULT_DB_URI,
+    SERVER_URL: serverUrl,
+    PUBLIC_SERVER_URL: publicServerURL,
     SERVER_PORT,
     FILE_KEY: fileKey,
     PHOTO_WIDTH,
     PHOTO_HEIGHT,
     APP_NAME: appName = DEFAULT_APP_NAME,
+    SERVER_HOST: serverHost = DEFAULT_SERVER_HOST,
+    SERVER_PROTOCOL: serverProtocol = DEFAULT_PROTOCOL,
+    PARSE_PREFIX: parsePrefix = DEFAULT_PARSE_PREFIX,
   },
 } = process;
 
@@ -72,23 +84,35 @@ const parseIntEnvironment = (envVar, defaultValue) => {
   return result;
 };
 
-const config = {
-  appId,
-  masterKey,
-  databaseUri,
-  serverUrl,
-  publicServerUrl,
+const genericConfig = {
+  serverHost,
   serverPort: parseIntEnvironment(SERVER_PORT, DEFAULT_PORT),
-  fileKey,
+  serverProtocol,
+  parsePrefix,
   photoWidth: parseIntEnvironment(PHOTO_WIDTH, DEFAULT_PHOTO_WIDTH),
   photoHeight: parseIntEnvironment(PHOTO_HEIGHT, DEFAULT_PHOTO_HEIGHT),
-  appName,
+};
+
+/* ------ Config value generation ------ */
+const finalServerUrl = `${serverProtocol}://${serverHost}:${genericConfig.serverPort}/${parsePrefix}`;
+
+const config = {
+  parse: {
+    appId,
+    masterKey,
+    databaseURI,
+    serverUrl: serverUrl || finalServerUrl,
+    publicServerURL: publicServerURL || finalServerUrl,
+    fileKey,
+    appName,
+  },
+  generic: genericConfig,
 };
 /* ------- Validation/conversion of values ---------*/
-// required values
-['appId', 'masterKey', 'databaseUri', 'serverUrl', 'appName'].forEach(
+// required values for parse config
+['appId', 'masterKey', 'databaseURI', 'serverUrl', 'appName'].forEach(
   (prop) => {
-    const configValue = config[prop];
+    const configValue = config.parse[prop];
     assert(
       configValue && typeof configValue === 'string',
       `Missing value for property ${prop} in configuration. Please make sure to provide all required values for app initialization.`
