@@ -33,8 +33,7 @@
     "express": "^4.17.1",
     "parse-dashboard": "^2.1.0",
     "parse-server": "^2.8.4",
-    "sharp": "^0.27.1",
-    "superagent": "^6.1.0"
+    "sharp": "^0.27.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",

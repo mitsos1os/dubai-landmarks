@@ -5,7 +5,6 @@
 const {
   parse: { serverURL, appId, masterKey },
 } = require('../../config');
-const superagent = require('superagent');
 const assert = require('assert').strict;
 
 /**
@@ -44,11 +43,16 @@ const addCLPToSchema = async (schema) => {
   const updateObj = { classLevelPermissions: createCLP(schema) };
   const { className: schemaName } = schema;
   console.log(`Adding CLP to schema: ${schemaName}`);
-  return superagent
-    .put(`${serverURL}/schemas/${schemaName}`)
-    .send(updateObj)
-    .set('X-Parse-Application-ID', appId)
-    .set('X-Parse-Master-Key', masterKey);
+  return Parse.Cloud.httpRequest({
+    url: `${serverURL}/schemas/${schemaName}`,
+    method: 'PUT',
+    body: updateObj,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Parse-Application-ID': appId,
+      'X-Parse-Master-Key': masterKey,
+    },
+  });
 };
 
 module.exports = {
