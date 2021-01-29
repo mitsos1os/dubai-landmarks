@@ -26,7 +26,7 @@ const createThumbnail = async (photoData, maxWidth, maxHeight) => {
   console.log(
     `Resizing image of ${width} X ${height} to max ${maxWidth} X ${maxHeight} using method ${THUMBNAIL_METHOD}`
   );
-  const result = originalImage
+  const result = await originalImage
     .resize({ width: maxWidth, height: maxHeight })
     .toBuffer();
   assert(Buffer.isBuffer(result), 'Resized image buffer could not be produced');

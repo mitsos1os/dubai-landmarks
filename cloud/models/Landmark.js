@@ -30,6 +30,11 @@ class Landmark extends Parse.Object {
    * @returns {Promise<Parse.File>}
    */
   static async createResizedPhotoFile(originalImage, save = true) {
+    assert(
+      originalImage && typeof originalImage === 'object',
+      'Invalid originalImage'
+    );
+    assert.strictEqual(typeof save, 'boolean', 'Invalid flag for save');
     const imageUrl = originalImage.url();
     const imageName = originalImage.name();
     assert(
@@ -60,7 +65,7 @@ class Landmark extends Parse.Object {
    * @returns {Promise<void>}
    */
   static async afterSaveHandler({ object }) {
-    if (!object.dirty('photo')) return; // nothing to do if photo didn't change
+    if (!object.dirtyKeys().includes('photo')) return; // nothing to do if photo didn't change
     // photo changed, so we need to create thumbnail
     console.log(
       `Photo changed for post with ID: ${object.id}. Creating thumbnail...`
