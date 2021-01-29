@@ -8,7 +8,7 @@
     "lint": "eslint",
     "prettier": "prettier --write '{**/*,*}.{js,ts}'",
     "prettier-check": "prettier --check '{**/*,*}.{js,ts}'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --exit test"
   },
   "repository": {
     "type": "git",
@@ -37,10 +37,14 @@
     "superagent": "^6.1.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-import": "^2.22.1",
-    "prettier": "2.2.1"
+    "mocha": "^8.2.1",
+    "prettier": "2.2.1",
+    "sinon": "^9.2.4"
   }
 }
