@@ -9,7 +9,10 @@ landmarkSchema
   .addString('url')
   .addString('shot_info')
   .addString('description')
-  .addNumber('order');
+  .addNumber('order')
+  .addFile('photo');
+
+// Schema permissions
 
 // add indexes
 landmarkSchema.addIndex('orderIndex', { order: 1 });

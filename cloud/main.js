@@ -14,4 +14,7 @@ const main = async () => {
 // prettier-ignore
 main()
   .then('Cloud code initialized successfully')
-  .catch((err) => console.error('Error with cloud initialization', err));
+  .catch((err) => {
+    console.error('Error with cloud initialization', err);
+    process.exit(err.code ?? 1);
+  });

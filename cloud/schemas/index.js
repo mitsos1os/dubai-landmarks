@@ -12,7 +12,19 @@ const schemasArray = [landmarkSchema];
  * @returns {Promise<ParseSchema[]>}
  */
 const initSchemas = async () => {
-  const allSchemas = await Parse.Schema.all();
+  let allSchemas;
+  try {
+    allSchemas = await Parse.Schema.all();
+  } catch (err) {
+    if (err.message === 'Schema not found.') {
+      // no way to get db initialization for first app run. Query will throw for
+      // no data in response
+      allSchemas = [];
+    } else {
+      // other error
+      throw err; // propagate
+    }
+  }
   const existingSchemaNames = allSchemas.map(({ className }) => className);
   return Promise.map(
     schemasArray.filter(
