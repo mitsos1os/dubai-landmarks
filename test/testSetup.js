@@ -10,13 +10,17 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const sinon = require('sinon');
 const app = require('../index');
+const Promise = require('bluebird');
 
 const startPromise = app.start(); // parse tries to immediately verify the server
 chai.use(chaiAsPromised);
 const should = chai.should();
 
 before('start application', async () => {
-  await startPromise;
+  await Promise.all([
+    startPromise,
+    Promise.delay(1000), // wait for all schemas and handlers to be created
+  ]);
 });
 
 after('stop application', async () => {
