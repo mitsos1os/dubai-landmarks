@@ -71,6 +71,8 @@ const {
     DASHBOARD_ENABLE: dashboardEnable,
     PARSE_DASHBOARD_USER_ID: dashboardUserId = DEFAULT_DASHBOARD_USER_ID,
     PARSE_DASHBOARD_USER_PASSWORD: dashboardPassword = DEFAULT_DASHBOARD_USER_PASS,
+    ADMIN_USER: adminUsername,
+    ADMIN_PASSWORD: adminPassword,
   },
 } = process;
 
@@ -131,6 +133,8 @@ const genericConfig = {
     DEFAULT_PHOTO_HEIGHT,
     'PHOTO_HEIGHT'
   ),
+  adminUsername,
+  adminPassword,
 };
 
 /* ------ Config value generation ------ */

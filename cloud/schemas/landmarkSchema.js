@@ -13,6 +13,7 @@ landmarkSchema
   .addFile('photo');
 
 // Schema permissions
+// TODO: cannot set permissions through current SDK version!
 
 // add indexes
 landmarkSchema.addIndex('orderIndex', { order: 1 });
