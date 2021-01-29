@@ -3,6 +3,9 @@
 require('./testSetup');
 const Promise = require('bluebird');
 const { Landmark } = require('../cloud/models');
+const {
+  generic: { adminUsername, adminPassword },
+} = require('../config');
 
 describe('Testing Landmarks', () => {
   describe('Testing Access restriction', () => {
@@ -50,8 +53,32 @@ describe('Testing Landmarks', () => {
       });
     });
     describe('for Administrator', () => {
-      it('should ALLOW READ access for Administrator', async () => {});
-      it('should ALLOW WRITE access for Administrator', async () => {});
+      let sessionToken;
+      before('login as Administrator', async () => {
+        const loggedInUser = await Parse.User.logIn(
+          adminUsername,
+          adminPassword
+        );
+        sessionToken = loggedInUser.get('sessionToken');
+      });
+      it('should ALLOW READ access for Administrator', async () => {
+        const readQuery = new Parse.Query(Landmark);
+        const results = await readQuery.find({ sessionToken });
+        const expectedObjects = createdLandmarks.map((e) => e.attributes);
+        results
+          .map((e) => e.attributes)
+          .should.deep.have.members(expectedObjects);
+      });
+      it('should ALLOW WRITE access for Administrator', async () => {
+        const landmarkToUpdate = new Landmark();
+        landmarkToUpdate.id = createdLandmarks[0].id; // get first of created landmarks
+        landmarkToUpdate.set('title', 'some updated title');
+        await landmarkToUpdate.save(null, { sessionToken });
+        const updatedLandmark = await new Parse.Query(Landmark).get(
+          landmarkToUpdate.id
+        );
+        updatedLandmark.get('title').should.equal('some updated title');
+      });
     });
   });
 });
