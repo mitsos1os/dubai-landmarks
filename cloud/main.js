@@ -10,8 +10,8 @@ const { initDefaultUserRole } = require('./utils/init');
  */
 const main = async () => {
   await Promise.all([
-    initSchemas(), // initialize schemas
     initDefaultUserRole(),
+    initSchemas(), // initialize schemas
   ]);
 };
 

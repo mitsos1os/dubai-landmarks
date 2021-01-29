@@ -20,6 +20,7 @@
     "rules": {
         "strict": ["error", "safe"],
         "import/order": "off",
-        "no-console": "off"
+        "no-console": "off",
+        "no-prototype-builtins": "off"
     }
 }

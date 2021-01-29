@@ -2,6 +2,7 @@
 
 const Promise = require('bluebird');
 const landmarkSchema = require('./landmarkSchema');
+const { addCLPToSchema } = require('../utils/loadCLPs');
 
 const schemasArray = [landmarkSchema];
 
@@ -30,7 +31,10 @@ const initSchemas = async () => {
     schemasArray.filter(
       (schema) => !existingSchemaNames.includes(schema.className)
     ),
-    (schema) => schema.save()
+    (schema) => {
+      console.log(`Initializing schema ${schema.className}`);
+      return schema.save().then(() => addCLPToSchema(schema));
+    }
   );
 };
 
