@@ -1,10 +1,7 @@
 'use strict';
 
 const Promise = require('bluebird');
-const landmarkSchema = require('./landmarkSchema');
-const { addCLPToSchema } = require('../utils/loadCLPs');
-
-const schemasArray = [landmarkSchema];
+const { addCLPToSchema, loadFiles } = require('../utils');
 
 /**
  * Helper function to check what schemas already exist in the database and
@@ -13,6 +10,7 @@ const schemasArray = [landmarkSchema];
  * @returns {Promise<ParseSchema[]>}
  */
 const initSchemas = async () => {
+  const schemasArray = loadFiles(__dirname);
   let allSchemas;
   try {
     allSchemas = await Parse.Schema.all();
@@ -27,7 +25,7 @@ const initSchemas = async () => {
     }
   }
   const existingSchemaNames = allSchemas.map(({ className }) => className);
-  return Promise.map(
+  await Promise.map(
     schemasArray.filter(
       (schema) => !existingSchemaNames.includes(schema.className)
     ),
@@ -36,9 +34,9 @@ const initSchemas = async () => {
       return schema.save().then(() => addCLPToSchema(schema));
     }
   );
+  return schemasArray;
 };
 
 module.exports = {
-  landmarkSchema,
   initSchemas,
 };

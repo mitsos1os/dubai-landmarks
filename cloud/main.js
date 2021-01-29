@@ -2,7 +2,7 @@
 
 const { initSchemas } = require('./schemas');
 require('./models');
-const { initDefaultUserRole } = require('./utils/init');
+const { initDefaultUserRole } = require('./utils');
 
 /**
  * Initialization function for server logic
