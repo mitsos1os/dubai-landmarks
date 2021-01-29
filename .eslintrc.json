@@ -14,6 +14,9 @@
             "impliedStrict": false
         }
     },
+    "globals": {
+        "Parse": "readonly"
+    },
     "rules": {
         "strict": ["error", "safe"],
         "import/order": "off",

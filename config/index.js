@@ -145,6 +145,8 @@ const config = {
     publicServerURL: publicServerURL || finalServerUrl,
     fileKey,
     appName,
+    allowClientClassCreation: false, // disable client creating classes
+    cloud: './cloud/main.js', // the main entrypoint for our cloud code
   },
   generic: genericConfig,
   dashboard: {
