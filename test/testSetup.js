@@ -8,12 +8,14 @@ env.DB_URI = 'mongodb://localhost:27017/dubai-landmarks-test'; // Should remove 
 /* eslint-disable import/no-extraneous-dependencies */
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const sinonChai = require('sinon-chai');
 const sinon = require('sinon');
 const app = require('../index');
 const Promise = require('bluebird');
 
 const startPromise = app.start(); // parse tries to immediately verify the server
 chai.use(chaiAsPromised);
+chai.use(sinonChai);
 const should = chai.should();
 
 before('start application', async () => {

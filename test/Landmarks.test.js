@@ -1,11 +1,15 @@
 'use strict';
 
-require('./testSetup');
+const { sinon, should } = require('./testSetup');
 const Promise = require('bluebird');
 const { Landmark } = require('../cloud/models');
 const {
-  generic: { adminUsername, adminPassword },
+  generic: { adminUsername, adminPassword, photoWidth, photoHeight },
 } = require('../config');
+const { getFileData } = require('../cloud/utils');
+const fs = require('fs');
+const path = require('path');
+const sharp = require('sharp');
 
 describe('Testing Landmarks', () => {
   describe('Testing Access restriction', () => {
@@ -79,6 +83,123 @@ describe('Testing Landmarks', () => {
         );
         updatedLandmark.get('title').should.equal('some updated title');
       });
+    });
+  });
+  describe('Automatic thumbnail creation on landmark photo', () => {
+    let landmark;
+    const defaultLandmarkData = {
+      title: 'Greatest landmark with photo',
+      short_info: 'short info about greatest landmark',
+      order: 1,
+    };
+    // read synchronously in test
+    const photoBuffer = fs.readFileSync(
+      path.resolve(__dirname, 'data/tower.jpg'),
+      {
+        encoding: null,
+      }
+    );
+    const createLandmark = (data = {}) =>
+      new Landmark({
+        ...defaultLandmarkData,
+        ...data,
+      }).save(null, { useMasterKey: true });
+    const sandbox = sinon.createSandbox();
+    // helper function to check photo and thumbnail to avoid repeating in tests
+    const checkThumbnailPhoto = async (landmarkObj) => {
+      const photoFile = landmarkObj.get('photo');
+      const thumbnailPhoto = landmarkObj.get('photo_thumb');
+      const imageData = await getFileData(thumbnailPhoto);
+      thumbnailPhoto.name().should.include(photoFile.name()); // check names
+      const thumbnailImage = sharp(imageData);
+      const {
+        width: thumbnailWidth,
+        height: thumbnailHeight,
+      } = await thumbnailImage.metadata();
+      thumbnailWidth.should.be.at.most(photoWidth);
+      thumbnailHeight.should.be.at.most(photoHeight);
+    };
+    before('creates spies', () => {
+      sandbox.spy(Landmark, 'createResizedPhotoFile');
+    });
+    beforeEach('reset spies', () => {
+      sandbox.resetHistory();
+    });
+    afterEach('clear resources', async () => {
+      await landmark.destroy({ useMasterKey: true });
+      console.log();
+    });
+    after('restore spies', () => {
+      sandbox.restore();
+    });
+    it('should not create a thumbnail when not updating photo field', async () => {
+      landmark = await createLandmark(); // no photo data
+      Landmark.createResizedPhotoFile.should.have.not.been.called;
+      should.not.exist(landmark.get('photo_thumb'));
+      landmark.set('title', 'Updated landmark title');
+      await landmark.save(null, { useMasterKey: true });
+      Landmark.createResizedPhotoFile.should.have.not.been.called; // not called either
+      should.not.exist(landmark.get('photo_thumb'));
+    });
+    it('should create a thumbnail of smaller size when creating landmark with photo field', async () => {
+      const photoFile = new Parse.File(
+        'landmarkPhoto',
+        Array.from(photoBuffer),
+        'image/jpg'
+      );
+      landmark = await createLandmark({ photo: photoFile });
+      await checkThumbnailPhoto(landmark);
+    });
+    it('should create photo thumbnail when updating landmark with photo', async () => {
+      landmark = await createLandmark(); // landmark with default data
+      const photoFile = new Parse.File(
+        'landmarkPhoto',
+        Array.from(photoBuffer),
+        'image/jpg'
+      );
+      landmark.set('photo', photoFile); // update the landmark with photo
+      await landmark.save(null, { useMasterKey: true });
+      await checkThumbnailPhoto(landmark);
+    });
+    it('should not re-create thumbnail when not updating existing photo', async () => {
+      const photoFile = new Parse.File(
+        'landmarkPhoto',
+        Array.from(photoBuffer),
+        'image/jpg'
+      );
+      landmark = await createLandmark({ photo: photoFile }); // create the landmark with photo
+      Landmark.createResizedPhotoFile.should.have.been.calledOnce; // original thumbnail creation
+      landmark.set('title', 'updated title of landmark');
+      await landmark.save(null, { useMasterKey: true });
+      Landmark.createResizedPhotoFile.should.have.been.calledOnce; // still one
+      should.exist(landmark.get('photo'));
+      should.exist(landmark.get('photo_thumb'));
+    });
+    it('should delete photo and thumbnail when unsetting it from landmark', async () => {
+      let photoFile = new Parse.File(
+        'landmarkPhoto',
+        Array.from(photoBuffer),
+        'image/jpg'
+      );
+      landmark = await createLandmark({ photo: photoFile }); // create the landmark with photo
+      photoFile = landmark.get('photo'); // get persisted version
+      landmark.unset('photo');
+      await landmark.save(null, { useMasterKey: true });
+      await getFileData(photoFile).should.be.rejected; // no file to get
+    });
+    it('should also delete the photo and thumbnail when deleting landmark', async () => {
+      let photoFile = new Parse.File(
+        'landmarkPhoto',
+        Array.from(photoBuffer),
+        'image/jpg'
+      );
+      landmark = await createLandmark({ photo: photoFile }); // create the landmark with photo
+      photoFile = landmark.get('photo'); // get persisted version
+      const thumbnailFile = landmark.get('photo_thumb');
+      landmark.unset('photo');
+      await landmark.save(null, { useMasterKey: true });
+      await getFileData(photoFile).should.be.rejected; // no photo to get
+      await getFileData(thumbnailFile).should.be.rejected; // no thumbnail to get
     });
   });
 });
