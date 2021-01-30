@@ -52,5 +52,10 @@ if (require.main === module) {
       console.log(`Server has started listening on port: ${serverPort}`)
     );
 }
+// setup error handling for uncaught rejections
+process.on('unhandledRejection', (reason) => {
+  console.error('Error from unhandled rejection... Will close...', reason);
+  setTimeout(process.exit, 2000, 1); // exit after 2 second
+});
 
 module.exports = app;
