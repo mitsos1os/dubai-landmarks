@@ -141,6 +141,23 @@ describe('Testing Landmarks', () => {
       Landmark.createResizedPhotoFile.should.have.not.been.called; // not called either
       should.not.exist(landmark.get('photo_thumb'));
     });
+    it('should not accept landmark photo bigger than 5MB', async () => {
+      // create bigger than 5MB file buffer
+      const limit = 5000001; // make sure we are more than the limit
+      const currentSize = photoBuffer.length;
+      const multiplier = Math.ceil(limit / currentSize);
+      const newBufferArray = [...new Array(multiplier)].map(() => photoBuffer);
+      const newPhotoBuffer = Buffer.concat(newBufferArray);
+      const photoFile = new Parse.File(
+        'Big_Photo.jpg',
+        Array.from(newPhotoBuffer),
+        'image/jpg'
+      );
+      landmark = await createLandmark({ photo: photoFile });
+      // check that photos not created
+      should.not.exist(landmark.get('photo'));
+      should.not.exist(landmark.get('photo_thumb'));
+    });
     it('should create a thumbnail of smaller size when creating landmark with photo field', async () => {
       const photoFile = new Parse.File(
         'landmarkPhoto',

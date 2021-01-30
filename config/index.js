@@ -23,6 +23,11 @@ const DEFAULT_PHOTO_WIDTH = 250;
 const DEFAULT_PHOTO_HEIGHT = 250;
 
 /**
+ * The default maximum acceptable photo size
+ * @type {number}
+ */
+const DEFAULT_MAX_PHOTO_SIZE = 5000000;
+/**
  * Default database URI
  * @type {string}
  */
@@ -63,6 +68,7 @@ const {
     FILE_KEY: fileKey,
     PHOTO_WIDTH,
     PHOTO_HEIGHT,
+    MAX_PHOTO_SIZE,
     APP_NAME: appName = DEFAULT_APP_NAME,
     SERVER_HOST: serverHost = DEFAULT_SERVER_HOST,
     SERVER_PROTOCOL: serverProtocol = DEFAULT_PROTOCOL,
@@ -132,6 +138,11 @@ const genericConfig = {
     PHOTO_HEIGHT,
     DEFAULT_PHOTO_HEIGHT,
     'PHOTO_HEIGHT'
+  ),
+  maxPhotoSize: parseIntEnvironment(
+    MAX_PHOTO_SIZE,
+    DEFAULT_MAX_PHOTO_SIZE,
+    'MAX_PHOTO_SIZE'
   ),
   adminUsername,
   adminPassword,

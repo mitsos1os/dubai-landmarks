@@ -2,7 +2,7 @@
 
 const landmarkSchema = require('../schemas/landmarkSchema');
 const {
-  generic: { photoWidth, photoHeight },
+  generic: { photoWidth, photoHeight, maxPhotoSize },
 } = require('../../config');
 const { createThumbnail, getFileData, deleteFile } = require('../utils');
 const assert = require('assert').strict;
@@ -18,7 +18,7 @@ class Landmark extends Parse.Object {
    */
   static registerCloudHooks() {
     Parse.Cloud.beforeSave('Landmark', (request, { success, error }) =>
-      Landmark.afterSaveHandler(request).then(success).catch(error)
+      Landmark.beforeSaveHandler(request).then(success).catch(error)
     );
     Parse.Cloud.afterDelete('Landmark', (request, { success, error }) =>
       Landmark.afterDeleteHandler(request).then(success).catch(error)
@@ -53,14 +53,35 @@ class Landmark extends Parse.Object {
   }
 
   /**
+   * Check that a ParseFile Image is of valid size according to provided config
+   *
+   * @param {Parse.File} photoFile
+   * @returns {Promise<boolean>}
+   */
+  static async checkImageSizeValid(photoFile) {
+    const photoData = await getFileData(photoFile);
+    return photoData.length < maxPhotoSize;
+  }
+
+  /**
    * Handler used when adding a photo to landmark object. Will create a
    * thumbnail version of the photo and save in landmark
    * @param {Landmark} object - The landmark object containing the photo
    * @returns {Promise<void>}
    */
+  // eslint-disable-next-line consistent-return
   static async addPhotoHandler(object) {
     const landmarkPhoto = object.get('photo');
-    // photo added, so we need to create thumbnail
+    const isPhotoValid = await Landmark.checkImageSizeValid(landmarkPhoto);
+    if (!isPhotoValid) {
+      // invalid photo, delete file created and unset from object
+      console.log(
+        `Image with name ${landmarkPhoto.name()} larger than allowed size. Will delete...`
+      );
+      await Landmark.deletePhotoHandler(object, object);
+      return;
+    }
+    // photo added and valid, so we need to create thumbnail
     console.log(
       `Photo changed for post with title: ${object.get(
         'title'
@@ -79,10 +100,14 @@ class Landmark extends Parse.Object {
    * @returns {Promise<void>}
    */
   static async deletePhotoHandler(object, instanceToUpdate) {
-    const photoFiles = ['photo', 'photo_thumb'].map((key) => object.get(key));
+    const photoKeys = ['photo', 'photo_thumb'];
+    const photoFiles = photoKeys.map((key) => object.get(key));
     // also remove thumbnail in instanceToUpdate if provided
-    if (instanceToUpdate) instanceToUpdate.unset('photo_thumb');
-    Promise.map(photoFiles, deleteFile);
+    return Promise.map(photoFiles, (photo, index) => {
+      if (!photo) return null; // no file retrieved
+      if (instanceToUpdate) instanceToUpdate.unset(photoKeys[index]); // unset key from object
+      return deleteFile(photo);
+    });
   }
 
   /**
@@ -94,14 +119,14 @@ class Landmark extends Parse.Object {
    * @param {Landmark} request.original - The original landmark instance
    * @returns {Promise<void>}
    */
-  static async afterSaveHandler({ object, original }) {
-    if (!object.dirtyKeys().includes('photo')) return null; // nothing to do if photo didn't change
+  static async beforeSaveHandler({ object, original }) {
+    if (!object.dirtyKeys().includes('photo')) return; // nothing to do if photo didn't change
     // check to see if update was addition or removal of photo
     const landmarkPhoto = object.get('photo');
     const photoAdded = typeof landmarkPhoto !== 'undefined';
-    return photoAdded
+    await (photoAdded
       ? Landmark.addPhotoHandler(object)
-      : Landmark.deletePhotoHandler(original, object);
+      : Landmark.deletePhotoHandler(original, object));
   }
 
   /**
