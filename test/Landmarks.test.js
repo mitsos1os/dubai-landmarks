@@ -78,9 +78,9 @@ describe('Testing Landmarks', () => {
         landmarkToUpdate.id = createdLandmarks[0].id; // get first of created landmarks
         landmarkToUpdate.set('title', 'some updated title');
         await landmarkToUpdate.save(null, { sessionToken });
-        const updatedLandmark = await new Parse.Query(Landmark).get(
-          landmarkToUpdate.id
-        );
+        const updatedLandmark = await new Parse.Query(
+          Landmark
+        ).get(landmarkToUpdate.id, { sessionToken });
         updatedLandmark.get('title').should.equal('some updated title');
       });
     });
