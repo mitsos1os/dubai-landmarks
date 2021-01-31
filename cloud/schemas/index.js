@@ -25,15 +25,19 @@ const initSchemas = async () => {
     }
   }
   const existingSchemaNames = allSchemas.map(({ className }) => className);
-  await Promise.map(
-    schemasArray.filter(
-      (schema) => !existingSchemaNames.includes(schema.className)
+  await Promise.all([
+    Promise.map(
+      schemasArray.filter(
+        (schema) => !existingSchemaNames.includes(schema.className)
+      ),
+      (schema) => {
+        console.log(`Initializing schema ${schema.className}`);
+        return schema.save();
+      }
     ),
-    (schema) => {
-      console.log(`Initializing schema ${schema.className}`);
-      return schema.save().then(() => addCLPToSchema(schema));
-    }
-  );
+    // add Class level permissions to all schemas
+    Promise.map(schemasArray, (schema) => addCLPToSchema(schema)),
+  ]);
   return schemasArray;
 };
 
