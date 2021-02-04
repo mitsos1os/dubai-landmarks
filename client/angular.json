@@ -35,6 +35,8 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles/fontawesome.css",
+              "src/styles/clean-blog.css",
               "src/styles.css"
             ],
             "scripts": []
