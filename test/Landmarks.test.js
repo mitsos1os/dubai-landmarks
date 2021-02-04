@@ -12,6 +12,41 @@ const path = require('path');
 const sharp = require('sharp');
 
 describe('Testing Landmarks', () => {
+  describe('Testing Landmark validation', () => {
+    afterEach('clear landmark instances', async () => {
+      await Landmark.schema.purge({ useMasterKey: true });
+    });
+    it('should throw Validation error when missing title property', async () => {
+      const landmark = new Landmark({
+        order: 1,
+        short_info: 'no title landmark',
+      });
+      await landmark
+        .save(null, { useMasterKey: true })
+        .should.be.rejectedWith('title missing from Landmark');
+    });
+    it('should throw Validation error when missing order property', async () => {
+      const landmark = new Landmark({
+        title: 'No order',
+        short_info: 'no order landmark',
+      });
+      await landmark
+        .save(null, { useMasterKey: true })
+        .should.be.rejectedWith('order missing from Landmark');
+    });
+    it('should throw error when updating already created landmark', async () => {
+      const landmark = new Landmark({
+        title: 'Very nice landmark',
+        order: 1,
+        short_info: 'landmark with title',
+      });
+      await landmark.save(null, { useMasterKey: true });
+      landmark.unset('title');
+      await landmark
+        .save(null, { useMasterKey: true })
+        .should.be.rejectedWith('title missing from Landmark');
+    });
+  });
   describe('Testing Access restriction', () => {
     let createdLandmarks;
     before('create test resources', async () => {
@@ -30,15 +65,12 @@ describe('Testing Landmarks', () => {
         },
       ];
       createdLandmarks = await Promise.map(landmarkData, (elem) => {
-        const landmarkModel = new Landmark();
-        Object.entries(elem).forEach(([key, value]) => {
-          landmarkModel.set(key, value);
-        });
+        const landmarkModel = new Landmark(elem);
         return landmarkModel.save(null, { useMasterKey: true });
       });
     });
     after('clear test resources', async () => {
-      await Landmark.schema.purge(); // remove all instances of Landmarks
+      await Landmark.schema.purge({ useMasterKey: true }); // remove all instances of Landmarks
     });
     describe('For guests', () => {
       it('should ALLOW READ access on landmarks for guests', async () => {

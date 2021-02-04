@@ -8,6 +8,14 @@ const { createThumbnail, getFileData, deleteFile } = require('../utils');
 const assert = require('assert').strict;
 const Promise = require('bluebird');
 
+/**
+ * A set of required properties that must be present in a Landmark instance to
+ * be valid
+ *
+ * @type {string[]}
+ */
+const REQUIRED_PROPERTIES = ['title', 'order'];
+
 class Landmark extends Parse.Object {
   constructor(attrs) {
     super('Landmark', attrs);
@@ -23,6 +31,44 @@ class Landmark extends Parse.Object {
     Parse.Cloud.afterDelete('Landmark', (request, { success, error }) =>
       Landmark.afterDeleteHandler(request).then(success).catch(error)
     );
+  }
+
+  /**
+   * The Base before save handler for landmark objects
+   *
+   * @param {Parse.Cloud.TriggerRequest} request - The original hook request
+   * @throws {Parse.Error} - In case of validation error
+   * @returns {Promise<void>}
+   */
+  static async beforeSaveHandler(request) {
+    const validationError = Landmark.validate(request.object);
+    if (validationError) throw validationError;
+    await Landmark.photoBeforeSaveHandler(request);
+  }
+
+  /**
+   * Accept a landmark instance and make sure it is valid. All required
+   * properties must be present
+   * In case of error Parse.Error.VALIDATION_ERROR is returned
+   * Otherwise null
+   *
+   * @param {Landmark} landmark
+   * @returns {?Parse.Error.VALIDATION_ERROR}
+   *
+   * @see REQUIRED_PROPERTIES
+   */
+  static validate(landmark) {
+    let error = null;
+    const { Error: ParseError } = Parse;
+    REQUIRED_PROPERTIES.forEach((prop) => {
+      if (landmark.get(prop) == null) {
+        error = new ParseError(
+          ParseError.VALIDATION_ERROR,
+          `${prop} missing from Landmark`
+        );
+      }
+    });
+    return error;
   }
 
   /**
@@ -119,7 +165,7 @@ class Landmark extends Parse.Object {
    * @param {Landmark} request.original - The original landmark instance
    * @returns {Promise<void>}
    */
-  static async beforeSaveHandler({ object, original }) {
+  static async photoBeforeSaveHandler({ object, original }) {
     if (!object.dirtyKeys().includes('photo')) return; // nothing to do if photo didn't change
     // check to see if update was addition or removal of photo
     const landmarkPhoto = object.get('photo');
