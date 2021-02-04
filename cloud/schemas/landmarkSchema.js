@@ -8,7 +8,7 @@ landmarkSchema
   .addString('title')
   .addArray('location')
   .addString('url')
-  .addString('shot_info')
+  .addString('short_info')
   .addString('description')
   .addNumber('order')
   .addFile('photo')
