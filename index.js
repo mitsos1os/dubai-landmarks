@@ -11,6 +11,10 @@ const { ParseServer } = require('parse-server');
 const ParseDashboard = require('parse-dashboard');
 
 const app = express();
+
+console.log(
+  `Initializing Parse Server on databaseURI ${parseConfig.databaseURI} and serverURL: ${parseConfig.serverURL}`
+);
 const parseAPI = new ParseServer(parseConfig); // init parse server
 
 // Mount express components
