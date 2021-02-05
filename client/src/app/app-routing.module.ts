@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LandmarksComponent } from './landmarks/landmarks.component';
+import { LandmarksListComponent } from './landmarks/landmarks-list/landmarks-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LandmarksComponent,
+    component: LandmarksListComponent,
   },
 ];
 
