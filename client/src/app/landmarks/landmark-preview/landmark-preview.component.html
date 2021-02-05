@@ -1,12 +1,18 @@
-<div class="post-preview">
-  <a> <!--  TODO add link to detail view-->
-    <h2 class="post-title">
-      {{landmark.title}}
-    </h2>
-  </a>
-  <p class="post-subtitle">
-    {{landmark.short_info}}
-  </p>
-
+<div class="container-fluid">
+  <div class="row post-preview">
+    <div class="photo-thumbnail col-md-3">
+      <img [src]="landmark.photo_thumb?.url() || '/assets/img/no-thumbnail.png'" class="w-100 rounded mx-auto d-block" alt="{{landmark.title}}">
+    </div>
+    <div class="preview-text col-md-9">
+      <a>
+        <h2 class="post-title">
+          {{landmark.title}}
+        </h2>
+      </a>
+      <p class="post-subtitle">
+        {{landmark.short_info}}
+      </p>
+    </div>
+  </div>
 </div>
 <hr>

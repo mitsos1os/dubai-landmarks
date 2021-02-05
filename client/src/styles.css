@@ -283,9 +283,16 @@ header.masthead .post-heading .meta a {
   margin-bottom: 10px;
 }
 
-.post-preview > a > .post-subtitle {
+.post-preview .post-subtitle {
   font-weight: 300;
   margin: 0 0 10px;
+  text-align: justify;
+}
+
+.post-preview .photo-thumbnail img {
+  /* Image thumbnails will be resized up to 250px*/
+  max-width: 250px;
+  max-height: 250px;
 }
 
 .post-preview > .post-meta {
