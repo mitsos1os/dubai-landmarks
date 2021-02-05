@@ -1,1 +1,34 @@
-<p>{{landmark.title}}</p>
+<!-- Page Header -->
+<header class="masthead" *ngIf="landmark">
+  <div class="overlay"></div>
+  <div class="container post-heading">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto text-center">
+        <h1>{{landmark.title}}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto text-center">
+        <p class="text-justify">{{landmark.short_info}}}</p>
+      </div>
+    </div>
+    <!--  Image section  -->
+    <div class="row" *ngIf="landmark.photo_thumb">
+      <div class="photo-thumbnail col-md-3 mx-auto">
+        <img [src]="landmark.photo_thumb?.url()" class="w-100 rounded mx-auto d-block" alt="{{landmark.title}}" />
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Landmark Content -->
+<article *ngIf="landmark">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto text-justify">
+        <h3 class="text-center">Description</h3>
+        <p>{{landmark.description}}</p>
+        <a href="{{landmark.url}}" class="caption text-muted" target="_blank">Landmark URL Link</a>
+      </div>
+    </div>
+  </div>
+</article>
