@@ -1,9 +1,9 @@
 <div class="container-fluid">
   <div class="row post-preview">
-    <div class="photo-thumbnail col-md-3 mb-sm-5 mb-md-auto">
-      <img [src]="landmarkData.photo_thumb?.url() || '/assets/img/no-thumbnail.png'" class="w-100 rounded mx-auto d-block" alt="{{landmarkData.title}}">
+    <div *ngIf="landmarkData.photo_thumb" class="photo-thumbnail col-md-3 mb-sm-5 mb-md-auto">
+      <img [src]="landmarkData.photo_thumb?.url()" class="w-100 rounded mx-auto d-block" alt="{{landmarkData.title}}">
     </div>
-    <div class="preview-text col-md-9">
+    <div [class]="['preview-text', landmarkData.photo_thumb ? 'col-md-9' : 'col-md-12']">
       <a [routerLink]="['/landmarks', landmark.id]">
         <h2 class="post-title">
           {{landmarkData.title}}
