@@ -1,16 +1,16 @@
 <div class="container-fluid">
   <div class="row post-preview">
     <div class="photo-thumbnail col-md-3">
-      <img [src]="landmark.photo_thumb?.url() || '/assets/img/no-thumbnail.png'" class="w-100 rounded mx-auto d-block" alt="{{landmark.title}}">
+      <img [src]="landmarkData.photo_thumb?.url() || '/assets/img/no-thumbnail.png'" class="w-100 rounded mx-auto d-block" alt="{{landmarkData.title}}">
     </div>
     <div class="preview-text col-md-9">
-      <a>
+      <a [routerLink]="['/landmarks', landmark.id]">
         <h2 class="post-title">
-          {{landmark.title}}
+          {{landmarkData.title}}
         </h2>
       </a>
       <p class="post-subtitle">
-        {{landmark.short_info}}
+        {{landmarkData.short_info}}
       </p>
     </div>
   </div>

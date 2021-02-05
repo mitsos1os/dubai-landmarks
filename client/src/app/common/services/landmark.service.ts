@@ -20,4 +20,16 @@ export class LandmarkService {
       .ascending('order');
     return from(query.find());
   }
+
+  /**
+   * Accept a landmark id and retrieve its full information
+   * @param {string} id
+   */
+  getLandmark(id: string | null): Observable<Landmark> {
+    if (!id) {
+      throw new Error('Cannot get landmark without id provided');
+    }
+    const query = new Parse.Query<Landmark>(Landmark);
+    return from(query.get(id));
+  }
 }
