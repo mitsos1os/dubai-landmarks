@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faBars } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +10,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 export class NavbarComponent {
   public isCollapsed = true;
   faUser = faUser;
+  faBars = faBars;
   constructor(private authService: AuthService) {}
 
   userLoggedIn(): boolean {

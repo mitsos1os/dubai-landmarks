@@ -4,7 +4,7 @@
     <a class="navbar-brand" routerLink="">Dubai Landmarks</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" (click)='toggleMenu()' aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       Menu
-      <i class="fas fa-bars"></i>
+      <fa-icon [icon]="faBars"></fa-icon>
     </button>
     <div [ngbCollapse]='isCollapsed' class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto" [ngSwitch]="userLoggedIn()">
