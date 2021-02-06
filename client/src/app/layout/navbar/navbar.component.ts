@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../auth/auth.service';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-navbar',
@@ -7,8 +9,14 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
   public isCollapsed = true;
+  faUser = faUser;
+  constructor(private authService: AuthService) {}
 
-  constructor() {}
+  userLoggedIn(): boolean {
+    const val = this.authService.isLoggedIn;
+    console.log('UserLoggedin', val);
+    return val;
+  }
 
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
