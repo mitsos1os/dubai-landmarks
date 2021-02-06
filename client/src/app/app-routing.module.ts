@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
+import { NotFoundComponent } from './error/not-found/not-found.component';
 import { LandmarksListComponent } from './landmarks/landmarks-list/landmarks-list.component';
 import { LandmarkDetailComponent } from './landmarks/landmark-detail/landmark-detail.component';
 import { LoginComponent } from './login/login.component';
@@ -38,7 +39,10 @@ const routes: Routes = [
     redirectTo: '/landmarks',
     pathMatch: 'full',
   },
-  // TODO: add catch all and 404 routes
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({
