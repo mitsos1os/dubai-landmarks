@@ -6,6 +6,7 @@ import { LandmarkDetailComponent } from './landmarks/landmark-detail/landmark-de
 import { LoginComponent } from './login/login.component';
 import { LandmarkEditComponent } from './landmarks/landmark-edit/landmark-edit.component';
 import { LandmarkDetailResolverService } from './landmarks/landmark-detail-resolver.service';
+import { NotLoggedInGuard } from './login/not-logged-in-guard.service';
 
 const routes: Routes = [
   {
@@ -29,7 +30,8 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent, // TODO add activation guard for already logged in
+    component: LoginComponent,
+    canActivate: [NotLoggedInGuard],
   },
   {
     path: '',
