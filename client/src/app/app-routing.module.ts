@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LandmarksListComponent } from './landmarks/landmarks-list/landmarks-list.component';
 import { LandmarkDetailComponent } from './landmarks/landmark-detail/landmark-detail.component';
 import { LoginComponent } from './login/login.component';
+import { LandmarkEditComponent } from './landmarks/landmark-edit/landmark-edit.component';
+import { LandmarkDetailResolverService } from './landmarks/landmark-detail-resolver.service';
 
 const routes: Routes = [
   {
@@ -10,12 +12,22 @@ const routes: Routes = [
     component: LandmarksListComponent,
   },
   {
+    path: 'landmarks/:id/edit',
+    component: LandmarkEditComponent, // TODO add activation guard
+    resolve: {
+      landmark: LandmarkDetailResolverService,
+    },
+  },
+  {
     path: 'landmarks/:id',
     component: LandmarkDetailComponent,
+    resolve: {
+      landmark: LandmarkDetailResolverService,
+    },
   },
   {
     path: 'login',
-    component: LoginComponent, // TODO add activation guard
+    component: LoginComponent, // TODO add activation guard for already logged in
   },
   {
     path: '',
@@ -26,7 +38,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

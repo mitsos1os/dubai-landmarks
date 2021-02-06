@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LandmarkInterface } from '../../common/models/Landmark';
+import { Landmark, LandmarkInterface } from '../../common/models/Landmark';
 import { ActivatedRoute } from '@angular/router';
-import { LandmarkService } from '../../common/services/landmark.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullphotoComponent } from '../fullphoto/fullphoto.component';
 
@@ -12,23 +11,12 @@ import { FullphotoComponent } from '../fullphoto/fullphoto.component';
 })
 export class LandmarkDetailComponent implements OnInit {
   landmark!: LandmarkInterface;
-  constructor(
-    private route: ActivatedRoute,
-    private landmarkService: LandmarkService,
-    private modalService: NgbModal
-  ) {}
-
-  getLandmark(): void {
-    const landmarkId = this.route.snapshot.paramMap.get('id');
-    this.landmarkService
-      .getLandmark(landmarkId)
-      .subscribe((landmarkRetrieved) => {
-        this.landmark = landmarkRetrieved.attributes;
-      });
-  }
+  constructor(private route: ActivatedRoute, private modalService: NgbModal) {}
 
   ngOnInit(): void {
-    this.getLandmark();
+    this.route.data.subscribe((routeData) => {
+      this.landmark = (routeData as { landmark: Landmark }).landmark.attributes;
+    });
   }
 
   openPhoto(): void {

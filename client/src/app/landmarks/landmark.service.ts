@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Landmark } from '../models/Landmark';
-import { Parse } from '../parse';
+import { Landmark } from '../common/models/Landmark';
+import { Parse } from '../common/parse';
 import { Observable, from } from 'rxjs';
 
 @Injectable({

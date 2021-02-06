@@ -6,6 +6,7 @@ import { LandmarksPageHeaderComponent } from './landmarks-page-header/landmarks-
 import { LandmarkPreviewComponent } from './landmark-preview/landmark-preview.component';
 import { LandmarkDetailComponent } from './landmark-detail/landmark-detail.component';
 import { FullphotoComponent } from './fullphoto/fullphoto.component';
+import { LandmarkEditComponent } from './landmark-edit/landmark-edit.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { FullphotoComponent } from './fullphoto/fullphoto.component';
     LandmarkPreviewComponent,
     LandmarkDetailComponent,
     FullphotoComponent,
+    LandmarkEditComponent,
   ],
   imports: [CommonModule, AppRoutingModule],
   entryComponents: [FullphotoComponent],

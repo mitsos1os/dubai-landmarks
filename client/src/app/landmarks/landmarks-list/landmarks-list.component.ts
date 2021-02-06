@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LandmarkService } from '../../common/services/landmark.service';
+import { LandmarkService } from '../landmark.service';
 import { Landmark } from '../../common/models/Landmark';
 
 @Component({
