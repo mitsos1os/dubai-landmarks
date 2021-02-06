@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Parse } from '../common/parse';
 import { Observable, from, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { UserCredentials } from './user-credentials';
 
 /**
@@ -21,13 +22,20 @@ export class AuthService {
   }
 
   login({ username, password }: UserCredentials): Observable<Parse.User> {
-    return from(Parse.User.logIn(username, password));
+    return from(Parse.User.logIn(username, password)).pipe(
+      tap(() => console.log(`Successfully logged in user ${username}`))
+    );
   }
 
   logout(): Observable<Parse.User> {
-    if (!this.isLoggedIn)
+    const currentUser = this.currentUser();
+    if (!currentUser)
       return throwError(new Error('Cannot logout non-logged in user'));
-    return from(Parse.User.logOut());
+    return from(Parse.User.logOut()).pipe(
+      tap(() =>
+        console.log(`Successfully logged out user ${currentUser.getUsername()}`)
+      )
+    );
   }
 
   currentUser(): Parse.User | undefined {

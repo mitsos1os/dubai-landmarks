@@ -2,12 +2,12 @@
   <div class="row justify-content-center">
     <div class="col-sm-4">
       <h5 class="text-white text-center mt-5">Enter login credentials</h5>
-      <form #loginForm="ngForm">
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
         <div class="form-group mx-auto">
           <label class="text-white text-center col-form-label" for="username">Username</label>
           <input type="text" class="form-control" [class.is-valid]="username.valid" [class.is-invalid]="!username.pristine && username.invalid" id="username"
                  required
-                 [(ngModel)]="user.username" name="username"
+                 [(ngModel)]="credentials.username" name="username"
                  #username="ngModel">
           <div [hidden]="username.valid || username.pristine"
                class="invalid-feedback">
@@ -18,7 +18,7 @@
           <label class="text-white text-center col-form-label" for="password">Password</label>
           <input type="password" class="form-control" [class.is-valid]="password.valid" [class.is-invalid]="!password.pristine && password.invalid" id="password"
                  required
-                 [(ngModel)]="user.password" name="password"
+                 [(ngModel)]="credentials.password" name="password"
                  #password="ngModel">
           <div [hidden]="username.valid || password.pristine"
                class="invalid-feedback">
