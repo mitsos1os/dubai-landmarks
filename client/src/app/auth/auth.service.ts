@@ -32,8 +32,12 @@ export class AuthService {
     if (!currentUser)
       return throwError(new Error('Cannot logout non-logged in user'));
     return from(Parse.User.logOut()).pipe(
-      tap(() =>
-        console.log(`Successfully logged out user ${currentUser.getUsername()}`)
+      tap(
+        () =>
+          console.log(
+            `Successfully logged out user ${currentUser.getUsername()}`
+          ),
+        (err) => console.error('Logout failed with error', err)
       )
     );
   }
