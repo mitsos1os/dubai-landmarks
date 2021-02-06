@@ -13,9 +13,7 @@ export class NavbarComponent {
   constructor(private authService: AuthService) {}
 
   userLoggedIn(): boolean {
-    const val = this.authService.isLoggedIn;
-    console.log('UserLoggedin', val);
-    return val;
+    return this.authService.isLoggedIn;
   }
 
   toggleMenu() {
@@ -24,5 +22,9 @@ export class NavbarComponent {
 
   closeMenu() {
     this.isCollapsed = true;
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
