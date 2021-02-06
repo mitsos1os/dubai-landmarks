@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth/auth.guard';
 import { LandmarksListComponent } from './landmarks/landmarks-list/landmarks-list.component';
 import { LandmarkDetailComponent } from './landmarks/landmark-detail/landmark-detail.component';
 import { LoginComponent } from './login/login.component';
@@ -13,10 +14,11 @@ const routes: Routes = [
   },
   {
     path: 'landmarks/:id/edit',
-    component: LandmarkEditComponent, // TODO add activation guard
+    component: LandmarkEditComponent,
     resolve: {
       landmark: LandmarkDetailResolverService,
     },
+    canActivate: [AuthGuard],
   },
   {
     path: 'landmarks/:id',
