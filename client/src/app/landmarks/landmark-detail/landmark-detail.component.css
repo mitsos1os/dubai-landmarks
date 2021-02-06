@@ -1,3 +1,6 @@
 .photo-thumbnail {
   cursor: pointer;
 }
+.back-button {
+  top: -100px;
+}

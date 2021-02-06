@@ -191,7 +191,7 @@ header.masthead .overlay {
 header.masthead .page-heading,
 header.masthead .post-heading,
 header.masthead .site-heading {
-  padding: 200px 0 150px;
+  padding: 200px 15px 150px;
   color: white;
 }
 
@@ -289,7 +289,7 @@ header.masthead .post-heading .meta a {
   text-align: justify;
 }
 
-.post-preview .photo-thumbnail img {
+.photo-thumbnail img {
   /* Image thumbnails will be resized up to 250px*/
   max-width: 250px;
   max-height: 250px;

@@ -2,6 +2,11 @@
 <header class="masthead" *ngIf="landmark">
   <div class="overlay"></div>
   <div class="container post-heading">
+    <div class="col-sm-1 back-button">
+      <a routerLink="/landmarks">
+        <button type="button" class="btn btn-primary">Back</button>
+      </a>
+    </div>
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto text-center">
         <h1>{{landmark.title}}</h1>
@@ -27,7 +32,7 @@
       <div class="col-lg-8 col-md-10 mx-auto text-justify">
         <h3 class="text-center">Description</h3>
         <p>{{landmark.description}}</p>
-        <a href="{{landmark.url}}" class="caption text-muted" target="_blank">Landmark URL Link</a>
+        <a href="{{landmark.url}}" class="caption text-muted" target="_blank">More Info {{landmark.title}} URL Link</a>
       </div>
     </div>
   </div>
