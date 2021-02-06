@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandmarksListComponent } from './landmarks/landmarks-list/landmarks-list.component';
 import { LandmarkDetailComponent } from './landmarks/landmark-detail/landmark-detail.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'landmarks/:id',
     component: LandmarkDetailComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent, // TODO add activation guard
   },
   {
     path: '',

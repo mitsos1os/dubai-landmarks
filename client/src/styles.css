@@ -415,3 +415,11 @@ footer .copyright {
   font-size: 16px;
   padding: 25px 35px;
 }
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}
