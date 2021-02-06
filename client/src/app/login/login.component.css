@@ -6,3 +6,7 @@
 .form-group {
   max-width: 350px;
 }
+
+.invalid-feedback {
+  display: block;
+}

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { faUser, faBars } from '@fortawesome/free-solid-svg-icons';
 
@@ -11,7 +12,11 @@ export class NavbarComponent {
   public isCollapsed = true;
   faUser = faUser;
   faBars = faBars;
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   userLoggedIn(): boolean {
     return this.authService.isLoggedIn;
@@ -27,5 +32,17 @@ export class NavbarComponent {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  goToLogin(): void {
+    this.closeMenu();
+    const {
+      router: { url: currentUrl },
+    } = this;
+    const isAlreadyLogin = currentUrl.includes('/login');
+    if (isAlreadyLogin) return; // nothing to do
+    this.router.navigate(['/login'], {
+      fragment: currentUrl,
+    });
   }
 }
