@@ -14,7 +14,7 @@
     </div>
     <!--  Image section  -->
     <div class="row" *ngIf="landmark.photo_thumb">
-      <div class="photo-thumbnail col-md-3 mx-auto">
+      <div class="photo-thumbnail col-md-3 mx-auto" (click)="this.openPhoto()">
         <img [src]="landmark.photo_thumb?.url()" class="w-100 rounded mx-auto d-block" alt="{{landmark.title}}" />
       </div>
     </div>
