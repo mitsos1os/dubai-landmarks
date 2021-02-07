@@ -1,7 +1,60 @@
-<div class="container-fluid full-background">
-  <div class="row">
-    <div class="col-lg-8 col-md-10 mx-auto">
-
+<div class="full-background">
+  <div class="container">
+    <div class="col-sm-1 back-button">
+      <a [routerLink]="['/landmarks', landmark.id]">
+        <button type="button" class="btn btn-primary">Back</button>
+      </a>
+    </div>
+    <div class="row pt-3">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <form #editLandmarkForm="ngForm" class="mb-5">
+          <h2 class="text-white mb-4 text-center">Edit Content for: {{landmarkData.title}}</h2>
+          <div class="form-group">
+            <input class="form-control py-4" id="title" type="text"
+                   placeholder="Landmark title" required
+                   [(ngModel)]="landmarkData.title" name="title"
+                   [class.is-valid]="title.valid" [class.is-invalid]="!title.pristine && title.invalid"
+                   #title="ngModel">
+            <div [hidden]="title.valid || title.pristine"
+                 class="invalid-feedback">
+              Title is required
+            </div>
+          </div>
+          <div class="form-group">
+            <textarea class="form-control py-4" id="short_info" type="text"
+                   placeholder="Short info" required
+                   [(ngModel)]="landmarkData.short_info" name="short_info"
+                   [class.is-valid]="short_info.valid" [class.is-invalid]="!short_info.pristine && short_info.invalid"
+                      #short_info="ngModel"></textarea>
+            <div [hidden]="short_info.valid || short_info.pristine"
+                 class="invalid-feedback">
+              Short info is required
+            </div>
+          </div>
+          <div class="form-group">
+            <textarea class="form-control py-4" id="description" type="text"
+                      placeholder="Description" required
+                      [(ngModel)]="landmarkData.description" name="description"
+                      [class.is-valid]="description.valid" [class.is-invalid]="!description.pristine && description.invalid"
+                      #description="ngModel"></textarea>
+            <div [hidden]="description.valid || description.pristine"
+                 class="invalid-feedback">
+              Description is required
+            </div>
+          </div>
+          <div class="form-group">
+            <input class="form-control py-4" id="url" type="text"
+                   placeholder="Landmark URL" required
+                   [(ngModel)]="landmarkData.url" name="url"
+                   [class.is-valid]="url.valid" [class.is-invalid]="!url.pristine && url.invalid"
+                   #url="ngModel">
+            <div [hidden]="url.valid || url.pristine"
+                 class="invalid-feedback">
+              URL is required
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

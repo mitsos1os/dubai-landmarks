@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -28,7 +29,10 @@ export class NavbarComponent {
   }
 
   logout(): void {
-    this.authService.logout();
+    this.authService
+      .logout()
+      .pipe(finalize(() => this.router.navigate([''])))
+      .subscribe();
   }
 
   goToLogin(): void {

@@ -20,7 +20,7 @@ const routes: Routes = [
     resolve: {
       landmark: LandmarkDetailResolverService,
     },
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard], // make sure route cannot be accessed from non-admin user
   },
   {
     path: 'landmarks/:id',
