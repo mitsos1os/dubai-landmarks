@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { finalize } from 'rxjs/operators';
 
@@ -10,11 +10,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class NavbarComponent {
   public isCollapsed = true;
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   userLoggedIn(): boolean {
     return this.authService.isLoggedIn;
@@ -29,18 +25,9 @@ export class NavbarComponent {
   }
 
   logout(): void {
-    const {
-      router: { url: currentUrl },
-    } = this;
     this.authService
       .logout()
-      .pipe(
-        finalize(() =>
-          this.router.navigate([currentUrl], {
-            queryParams: { refresh: '' },
-          })
-        )
-      )
+      .pipe(finalize(() => window.location.reload()))
       .subscribe();
   }
 

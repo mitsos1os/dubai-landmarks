@@ -4,11 +4,20 @@
       <img [src]="landmarkData.photo_thumb?.url()" class="w-100 rounded mx-auto d-block" alt="{{landmarkData.title}}">
     </div>
     <div [class]="['preview-text', landmarkData.photo_thumb ? 'col-md-9' : 'col-md-12']">
-      <a [routerLink]="['/landmarks', landmark.id]">
-        <h2 class="post-title">
-          {{landmarkData.title}}
-        </h2>
-      </a>
+      <div class="row">
+        <div class="col-sm-10">
+          <a [routerLink]="['/landmarks', landmark.id]">
+            <h2 class="post-title">
+              {{landmarkData.title}}
+            </h2>
+          </a>
+        </div>
+        <div class="col-sm-2" *ngIf="showEdit">
+          <a [routerLink]="['/landmarks', landmark.id, 'edit']">
+            <fa-icon [icon]="['far', 'edit']"></fa-icon>
+          </a>
+        </div>
+      </div>
       <p class="post-subtitle">
         {{landmarkData.short_info}}
       </p>

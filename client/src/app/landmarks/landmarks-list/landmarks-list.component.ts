@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AuthService } from '../../auth/auth.service';
 import { LandmarkService } from '../landmark.service';
 import { Landmark } from '../../common/models/Landmark';
 
@@ -10,7 +11,12 @@ import { Landmark } from '../../common/models/Landmark';
 })
 export class LandmarksListComponent {
   landmarks$: Observable<Landmark[]>;
-  constructor(private landmarkService: LandmarkService) {
+  isLoggedIn: boolean;
+  constructor(
+    private landmarkService: LandmarkService,
+    private authService: AuthService
+  ) {
     this.landmarks$ = this.landmarkService.getLandMarksList();
+    this.isLoggedIn = this.authService.isLoggedIn;
   }
 }

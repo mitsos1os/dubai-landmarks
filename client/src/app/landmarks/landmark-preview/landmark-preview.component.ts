@@ -8,6 +8,7 @@ import { Landmark, LandmarkInterface } from '../../common/models/Landmark';
 })
 export class LandmarkPreviewComponent implements OnInit {
   @Input() landmark!: Landmark;
+  @Input() showEdit!: boolean;
   landmarkData!: LandmarkInterface;
   constructor() {}
 

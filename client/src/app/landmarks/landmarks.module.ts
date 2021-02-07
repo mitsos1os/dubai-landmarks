@@ -8,6 +8,7 @@ import { LandmarkDetailComponent } from './landmark-detail/landmark-detail.compo
 import { FullphotoComponent } from './fullphoto/fullphoto.component';
 import { LandmarkEditComponent } from './landmark-edit/landmark-edit.component';
 import { FormsModule } from '@angular/forms';
+import { IconsModule } from '../icons/icons.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { FormsModule } from '@angular/forms';
     FullphotoComponent,
     LandmarkEditComponent,
   ],
-  imports: [CommonModule, AppRoutingModule, FormsModule],
+  imports: [CommonModule, AppRoutingModule, FormsModule, IconsModule],
   entryComponents: [FullphotoComponent],
 })
 export class LandmarksModule {}
