@@ -78,7 +78,7 @@
             <ngb-alert type="warning" [dismissible]="false" [hidden]="!imageFileSizeError"> File size cannot exceed {{maxPhotoSize}} bytes</ngb-alert>
           </div>
           <div class="text-center">
-            <button class="btn btn-primary" type="submit" [disabled]="editLandmarkForm.pristine || editLandmarkForm.invalid">Save</button>
+            <button class="btn btn-primary" type="submit" [disabled]="imageFileSizeError || editLandmarkForm.pristine || editLandmarkForm.invalid">Save</button>
             <ngb-alert class="mt-3" type="danger" [dismissible]="false" [hidden]="!saveFailed"> There was error updating the landmark</ngb-alert>
           </div>
         </form>

@@ -133,7 +133,7 @@ export class LandmarkEditComponent implements OnInit {
       }
     }
     // check photo
-    const currentPhotoUrl = landmark.get('photo').url();
+    const currentPhotoUrl = landmark.get('photo')?.url();
     if (!this.imageURL && currentPhotoUrl) {
       // photo deleted
       landmark.unset('photo');
