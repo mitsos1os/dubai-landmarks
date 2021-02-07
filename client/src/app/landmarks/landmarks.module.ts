@@ -9,6 +9,7 @@ import { FullphotoComponent } from './fullphoto/fullphoto.component';
 import { LandmarkEditComponent } from './landmark-edit/landmark-edit.component';
 import { FormsModule } from '@angular/forms';
 import { IconsModule } from '../icons/icons.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,13 @@ import { IconsModule } from '../icons/icons.module';
     FullphotoComponent,
     LandmarkEditComponent,
   ],
-  imports: [CommonModule, AppRoutingModule, FormsModule, IconsModule],
+  imports: [
+    CommonModule,
+    AppRoutingModule,
+    FormsModule,
+    IconsModule,
+    NgbModule,
+  ],
   entryComponents: [FullphotoComponent],
 })
 export class LandmarksModule {}
