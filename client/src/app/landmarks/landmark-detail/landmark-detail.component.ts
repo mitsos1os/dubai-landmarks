@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../auth/auth.service';
 import { Landmark, LandmarkInterface } from '../../common/models/Landmark';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,23 +11,33 @@ import { FullphotoComponent } from '../fullphoto/fullphoto.component';
   styleUrls: ['./landmark-detail.component.css'],
 })
 export class LandmarkDetailComponent implements OnInit {
-  landmark!: LandmarkInterface;
-  constructor(private route: ActivatedRoute, private modalService: NgbModal) {}
+  landmark!: Landmark;
+  landmarkData!: LandmarkInterface;
+  constructor(
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((routeData) => {
-      this.landmark = (routeData as { landmark: Landmark }).landmark.attributes;
+      this.landmark = (routeData as { landmark: Landmark }).landmark;
+      this.landmarkData = this.landmark.attributes;
     });
+  }
+
+  loggedIn() {
+    return this.authService.isLoggedIn;
   }
 
   openPhoto(): void {
     const modalRef = this.modalService.open(FullphotoComponent);
-    modalRef.componentInstance.title = this.landmark.title;
-    if (!this.landmark.photo) {
+    modalRef.componentInstance.title = this.landmarkData.title;
+    if (!this.landmarkData.photo) {
       throw new Error(
-        `Reached non existing photo url in ${this.landmark.title}`
+        `Reached non existing photo url in ${this.landmarkData.title}`
       );
     }
-    modalRef.componentInstance.photo_url = this.landmark.photo.url();
+    modalRef.componentInstance.photo_url = this.landmarkData.photo.url();
   }
 }

@@ -1,6 +1,6 @@
 .photo-thumbnail {
   cursor: pointer;
 }
-.back-button {
-  top: -100px;
+header.masthead .post-heading {
+  padding-top: 100px;
 }

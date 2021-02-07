@@ -2,37 +2,44 @@
 <header class="masthead">
   <div class="overlay"></div>
   <div class="container post-heading">
-    <div class="col-sm-1 back-button">
-      <a routerLink="/landmarks">
-        <button type="button" class="btn btn-primary">Back</button>
-      </a>
-    </div>
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto text-center">
-        <h1>{{landmark.title}}</h1>
+    <div class="button-row row justify-content-between">
+      <div class="col-sm-1 back-button">
+        <a routerLink="/landmarks">
+          <button type="button" class="btn btn-primary">Back</button>
+        </a>
+      </div>
+      <div class="col-sm-1 back-button" *ngIf="loggedIn()">
+        <a [routerLink]="['/landmarks', landmark.id, 'edit']">
+          <button type="button" class="btn btn-primary">Edit</button>
+        </a>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto text-center">
-        <p class="text-justify">{{landmark.short_info}}}</p>
+        <h1>{{landmarkData.title}}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto text-center">
+        <p class="text-justify">{{landmarkData.short_info}}}</p>
       </div>
     </div>
     <!--  Image section  -->
-    <div class="row" *ngIf="landmark.photo_thumb">
+    <div class="row" *ngIf="landmarkData.photo_thumb">
       <div class="photo-thumbnail col-md-3 mx-auto" (click)="this.openPhoto()">
-        <img [src]="landmark.photo_thumb?.url()" class="w-100 rounded mx-auto d-block" alt="{{landmark.title}}" />
+        <img [src]="landmarkData.photo_thumb?.url()" class="w-100 rounded mx-auto d-block" alt="{{landmarkData.title}}" />
       </div>
     </div>
   </div>
 </header>
 <!-- Landmark Content -->
-<article *ngIf="landmark">
+<article *ngIf="landmarkData">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto text-justify">
         <h3 class="text-center">Description</h3>
-        <p>{{landmark.description}}</p>
-        <a href="{{landmark.url}}" class="caption text-muted" target="_blank">More Info {{landmark.title}} URL Link</a>
+        <p>{{landmarkData.description}}</p>
+        <a href="{{landmarkData.url}}" class="caption text-muted" target="_blank">More Info {{landmarkData.title}} URL Link</a>
       </div>
     </div>
   </div>
