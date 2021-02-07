@@ -4,7 +4,7 @@ export interface LandmarkInterface {
   title: string;
   location?: number[];
   url?: string;
-  short_info?: string;
+  short_info: string;
   description?: string;
   order: number;
   photo?: Parse.File;

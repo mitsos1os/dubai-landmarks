@@ -7,7 +7,7 @@
     </div>
     <div class="row pt-3">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <form #editLandmarkForm="ngForm" class="mb-5">
+        <form #editLandmarkForm="ngForm" (ngSubmit)="onSubmit()" class="mb-5">
           <h2 class="text-white mb-4 text-center">Edit Content for: {{landmarkFormData.title}}</h2>
           <div class="form-group">
             <label class="text-white text-center col-form-label" for="title">Title</label>
@@ -78,7 +78,7 @@
             <ngb-alert type="warning" [dismissible]="false" [hidden]="!imageFileSizeError"> File size cannot exceed {{maxPhotoSize}} bytes</ngb-alert>
           </div>
           <div class="text-center">
-            <button class="btn btn-primary" type="submit" [disabled]="editLandmarkForm.invalid">Save</button>
+            <button class="btn btn-primary" type="submit" [disabled]="editLandmarkForm.pristine || editLandmarkForm.invalid">Save</button>
           </div>
         </form>
       </div>
