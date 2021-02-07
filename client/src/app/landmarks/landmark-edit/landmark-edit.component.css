@@ -19,3 +19,7 @@
 #description {
   min-height: 300px;
 }
+
+#photo-input {
+  min-height: 50px;
+}

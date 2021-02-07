@@ -10,6 +10,7 @@
         <form #editLandmarkForm="ngForm" class="mb-5">
           <h2 class="text-white mb-4 text-center">Edit Content for: {{landmarkData.title}}</h2>
           <div class="form-group">
+            <label class="text-white text-center col-form-label" for="title">Title</label>
             <input class="form-control py-4" id="title" type="text"
                    placeholder="Landmark title" required
                    [(ngModel)]="landmarkData.title" name="title"
@@ -21,6 +22,19 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="text-white text-center col-form-label" for="title">Order</label>
+            <input class="form-control py-4" id="order" type="number"
+                   placeholder="1" required
+                   [(ngModel)]="landmarkData.order" name="order"
+                   [class.is-valid]="order.valid" [class.is-invalid]="!order.pristine && order.invalid"
+                   #order="ngModel">
+            <div [hidden]="order.valid || order.pristine"
+                 class="invalid-feedback">
+              Order is required
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="text-white text-center col-form-label" for="short_info">Short Info</label>
             <textarea class="form-control py-4" id="short_info" type="text"
                    placeholder="Short info" required
                    [(ngModel)]="landmarkData.short_info" name="short_info"
@@ -32,26 +46,35 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="text-white text-center col-form-label" for="description">Description</label>
             <textarea class="form-control py-4" id="description" type="text"
-                      placeholder="Description" required
-                      [(ngModel)]="landmarkData.description" name="description"
-                      [class.is-valid]="description.valid" [class.is-invalid]="!description.pristine && description.invalid"
-                      #description="ngModel"></textarea>
-            <div [hidden]="description.valid || description.pristine"
-                 class="invalid-feedback">
-              Description is required
-            </div>
+                      placeholder="Description"
+                      [(ngModel)]="landmarkData.description" name="description"></textarea>
           </div>
           <div class="form-group">
+            <label class="text-white text-center col-form-label" for="url">Landmark URL</label>
             <input class="form-control py-4" id="url" type="text"
-                   placeholder="Landmark URL" required
-                   [(ngModel)]="landmarkData.url" name="url"
-                   [class.is-valid]="url.valid" [class.is-invalid]="!url.pristine && url.invalid"
-                   #url="ngModel">
-            <div [hidden]="url.valid || url.pristine"
-                 class="invalid-feedback">
-              URL is required
+                   placeholder="Landmark URL"
+                   [(ngModel)]="landmarkData.url" name="url">
+          </div>
+          <div class="form-group">
+            <label class="text-white text-center col-form-label" for="lat">Latitude</label>
+            <input class="form-control py-4" id="lat" type="number"
+                   placeholder="1"
+                   [(ngModel)]="location.lat" name="lat">
+          </div>
+          <div class="form-group">
+            <label class="text-white text-center col-form-label" for="lng">Longitude</label>
+            <input class="form-control py-4" id="lng" type="number"
+                   placeholder="1"
+                   [(ngModel)]="location.lng" name="lat">
+          </div>
+          <div class="form-group">
+            <label class="text-white text-center col-form-label" for="photo-input">Photo</label>
+            <div class="photo-thumbnail text-center" *ngIf="imageURL && imageURL !== ''">
+              <img [src]="imageURL" alt="Landmark Photo">
             </div>
+            <input class="form-control mt-2" id="photo-input" type="file" accept="image/*" name="photo-input">
           </div>
         </form>
       </div>

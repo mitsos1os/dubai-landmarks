@@ -10,12 +10,22 @@ import { Landmark, LandmarkInterface } from '../../common/models/Landmark';
 export class LandmarkEditComponent implements OnInit {
   landmark!: Landmark;
   landmarkData!: LandmarkInterface;
+  location = { lat: 0, lng: 0 };
+  imageURL?: string;
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((routeData) => {
       this.landmark = (routeData as { landmark: Landmark }).landmark;
-      this.landmarkData = this.landmark.attributes;
+      this.extractData(this.landmark);
     });
+  }
+
+  extractData(landmark: Landmark): void {
+    this.landmarkData = this.landmark.attributes;
+    const [lat, lng] = this.landmarkData?.location || [];
+    this.location.lat = lat;
+    this.location.lng = lng;
+    this.imageURL = this.landmarkData.photo?.url();
   }
 }
