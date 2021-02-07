@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
 
 import { IconsModule } from './icons/icons.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -13,7 +14,12 @@ import { NotFoundComponent } from './error/not-found/not-found.component';
 import { AboutComponent } from './about/about.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NotFoundComponent, AboutComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    NotFoundComponent,
+    AboutComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -22,6 +28,9 @@ import { AboutComponent } from './about/about.component';
     LandmarksModule,
     FormsModule,
     IconsModule,
+    AgmCoreModule.forRoot({
+      apiKey: '', // proper API key should be used for production
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -4,3 +4,7 @@
 header.masthead .post-heading {
   padding-top: 100px;
 }
+
+agm-map {
+  height: 300px;
+}

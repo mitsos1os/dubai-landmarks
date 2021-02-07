@@ -13,6 +13,8 @@ import { FullphotoComponent } from '../fullphoto/fullphoto.component';
 export class LandmarkDetailComponent implements OnInit {
   landmark!: Landmark;
   landmarkData!: LandmarkInterface;
+  landmarkLat?: number;
+  landmarkLng?: number;
   constructor(
     private route: ActivatedRoute,
     private modalService: NgbModal,
@@ -23,6 +25,8 @@ export class LandmarkDetailComponent implements OnInit {
     this.route.data.subscribe((routeData) => {
       this.landmark = (routeData as { landmark: Landmark }).landmark;
       this.landmarkData = this.landmark.attributes;
+      this.landmarkLat = this.landmarkData.location?.[0];
+      this.landmarkLng = this.landmarkData.location?.[1];
     });
   }
 
