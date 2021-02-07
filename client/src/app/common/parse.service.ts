@@ -26,10 +26,15 @@ export class ParseService {
         const { code } = err;
         if (code >= 200 && code <= 209) {
           //session error
+          const {
+            router: { url },
+          } = this;
           this.authService
             .logout()
             .pipe(
-              finalize(() => this.router.navigate([''])) // redirect after logout
+              finalize(() =>
+                this.router.navigate([url], { queryParams: { refresh: '' } })
+              ) // redirect after logout
             )
             .subscribe();
         }

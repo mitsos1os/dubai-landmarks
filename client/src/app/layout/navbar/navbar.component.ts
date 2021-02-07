@@ -29,9 +29,18 @@ export class NavbarComponent {
   }
 
   logout(): void {
+    const {
+      router: { url: currentUrl },
+    } = this;
     this.authService
       .logout()
-      .pipe(finalize(() => this.router.navigate([''])))
+      .pipe(
+        finalize(() =>
+          this.router.navigate([currentUrl], {
+            queryParams: { refresh: '' },
+          })
+        )
+      )
       .subscribe();
   }
 

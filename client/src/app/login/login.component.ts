@@ -22,7 +22,7 @@ export class LoginComponent {
     this.authService.login(<UserCredentials>this.credentials).subscribe(
       () => {
         this.wrongCredentials = false;
-        console.log('Redirecting to home after successful log in...');
+        console.log('Redirecting after successful log in...');
         this.router.navigate([this.route.snapshot.fragment ?? '/landmarks']);
       },
       (err) => {
