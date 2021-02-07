@@ -10,9 +10,10 @@ import { LayoutModule } from './layout/layout.module';
 import { LandmarksModule } from './landmarks/landmarks.module';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './error/not-found/not-found.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NotFoundComponent],
+  declarations: [AppComponent, LoginComponent, NotFoundComponent, AboutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

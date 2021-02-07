@@ -12,7 +12,7 @@
           <a class="nav-link" routerLink="/landmarks" (click)='closeMenu()'>Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)='closeMenu()'>About</a>
+          <a class="nav-link" routerLink="/about" (click)='closeMenu()'>About</a>
         </li>
         <li class="nav-item" *ngSwitchCase="false">
           <a class="nav-link" (click)='goToLogin()'>Sign-in</a>

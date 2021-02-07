@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { LandmarkEditComponent } from './landmarks/landmark-edit/landmark-edit.component';
 import { LandmarkDetailResolverService } from './landmarks/landmark-detail-resolver.service';
 import { NotLoggedInGuard } from './login/not-logged-in-guard.service';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     canActivate: [NotLoggedInGuard],
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
   },
   {
     path: '',
