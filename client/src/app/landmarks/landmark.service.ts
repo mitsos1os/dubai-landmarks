@@ -33,4 +33,13 @@ export class LandmarkService {
     const query = new Parse.Query(Landmark);
     return this.parseService.sendParseRequest(query.get(id));
   }
+
+  /**
+   * Accept a landmark and save it using the parse service interceptors for
+   * error handling
+   * @param {Landmark} landmarkToSave
+   */
+  saveLandmark(landmarkToSave: Landmark): Observable<Landmark> {
+    return this.parseService.sendParseRequest(landmarkToSave.save());
+  }
 }

@@ -74,11 +74,12 @@
             <div class="photo-thumbnail text-center" *ngIf="imageURL && imageURL !== ''">
               <img [src]="imageURL" alt="Landmark Photo">
             </div>
-            <input class="form-control mt-2" id="photo-input" (change)="showPreview($event)" type="file" accept="image/*" name="photo-input">
+            <input class="form-control mt-2" id="photo-input" [(ngModel)]="imageInputValue" (change)="showPreview($event)" type="file" accept="image/*" name="photo-input">
             <ngb-alert type="warning" [dismissible]="false" [hidden]="!imageFileSizeError"> File size cannot exceed {{maxPhotoSize}} bytes</ngb-alert>
           </div>
           <div class="text-center">
             <button class="btn btn-primary" type="submit" [disabled]="editLandmarkForm.pristine || editLandmarkForm.invalid">Save</button>
+            <ngb-alert class="mt-3" type="danger" [dismissible]="false" [hidden]="!saveFailed"> There was error updating the landmark</ngb-alert>
           </div>
         </form>
       </div>

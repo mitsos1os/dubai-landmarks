@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Landmark, LandmarkInterface } from '../../common/models/Landmark';
 import { environment } from '../../../environments/environment';
 import { Parse } from '../../common/parse';
+import { LandmarkService } from '../landmark.service';
+import { tap } from 'rxjs/operators';
 
 /**
  * The maximum allowed size of photos to upload as a landmark photo
@@ -26,8 +28,14 @@ export class LandmarkEditComponent implements OnInit {
   imageURL?: string;
   imageFileSizeError = false;
   imageFileToUpload: File | null = null;
+  saveFailed = false;
+  imageInputValue?: string; // placeholder to just use for form pristine status change
   readonly maxPhotoSize = maxPhotoSize;
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private landmarkService: LandmarkService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((routeData) => {
@@ -148,5 +156,21 @@ export class LandmarkEditComponent implements OnInit {
   onSubmit(): void {
     this.updateLandmarkObject();
     if (!this.landmark.dirty()) return; // nothing to do for unchanged landmark
+    this.landmarkService
+      .saveLandmark(this.landmark)
+      .pipe(
+        tap(
+          () => {
+            this.saveFailed = false;
+          },
+          () => {
+            this.saveFailed = true;
+          }
+        )
+      )
+      .subscribe(() => {
+        // successful save, go back to view
+        this.router.navigate(['/landmarks', this.landmark.id]);
+      });
   }
 }
