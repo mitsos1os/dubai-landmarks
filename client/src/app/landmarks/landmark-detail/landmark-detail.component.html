@@ -1,0 +1,56 @@
+<!-- Page Header -->
+<header class="masthead">
+  <div class="overlay"></div>
+  <div class="container post-heading">
+    <div class="button-row row justify-content-between">
+      <div class="col-sm-1 back-button">
+        <a routerLink="/landmarks">
+          <button type="button" class="btn btn-primary">Back</button>
+        </a>
+      </div>
+      <div class="col-sm-1 back-button" *ngIf="loggedIn()">
+        <a [routerLink]="['/landmarks', landmark.id, 'edit']">
+          <button type="button" class="btn btn-primary">Edit</button>
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto text-center">
+        <h1>{{landmarkData.title}}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto text-center">
+        <p class="text-justify">{{landmarkData.short_info}}}</p>
+      </div>
+    </div>
+    <!--  Image/Map section  -->
+    <div class="row">
+      <div class="photo-thumbnail col-md-3 mx-auto" *ngIf="landmarkData.photo_thumb" (click)="this.openPhoto()">
+        <img [src]="landmarkData.photo_thumb?.url()" class="w-100 rounded mx-auto d-block" alt="{{landmarkData.title}}" />
+      </div>
+      <agm-map *ngIf=" landmarkLat && landmarkLng" class="col-md-6"
+               [latitude]="landmarkLat"
+               [longitude]="landmarkLng"
+               [disableDefaultUI]="false">
+        <agm-marker [latitude]="landmarkLat"
+                    [longitude]="landmarkLng"
+                    [label]="landmarkData.title"
+                    [markerDraggable]="false">
+        </agm-marker>
+      </agm-map>
+    </div>
+  </div>
+</header>
+<!-- Landmark Content -->
+<article *ngIf="landmarkData">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto text-justify">
+        <h3 class="text-center">Description</h3>
+        <p>{{landmarkData.description}}</p>
+        <a *ngIf="landmarkData.url" href="{{landmarkData.url}}" class="caption text-muted" target="_blank">More Info {{landmarkData.title}} URL Link</a>
+      </div>
+    </div>
+  </div>
+</article>

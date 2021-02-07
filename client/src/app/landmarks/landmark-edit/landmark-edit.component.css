@@ -1,0 +1,25 @@
+.full-background {
+  background-color: #212529;
+  min-height: 50vh;
+  padding-bottom: 10rem;
+}
+
+.back-button {
+  padding-top: 75px;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+#short_info {
+  min-height: 180px;
+}
+
+#description {
+  min-height: 300px;
+}
+
+#photo-input {
+  min-height: 50px;
+}

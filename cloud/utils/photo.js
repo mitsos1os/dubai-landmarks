@@ -27,9 +27,11 @@ const createThumbnail = async (photoData, maxWidth, maxHeight) => {
     `Resizing image of ${width} X ${height} to max ${maxWidth} X ${maxHeight} using method ${THUMBNAIL_METHOD}`
   );
   const result = await originalImage
-    .resize({ width: maxWidth, height: maxHeight })
+    .resize({ width: maxWidth, height: maxHeight, fit: sharp.fit.inside })
     .toBuffer();
   assert(Buffer.isBuffer(result), 'Resized image buffer could not be produced');
+  const { width: newWidth, height: newHeight } = await sharp(result).metadata();
+  console.log(`Resized image to ${newWidth} X ${newHeight}`);
   return result;
 };
 

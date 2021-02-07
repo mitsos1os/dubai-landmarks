@@ -14,7 +14,7 @@ const Promise = require('bluebird');
  *
  * @type {string[]}
  */
-const REQUIRED_PROPERTIES = ['title', 'order'];
+const REQUIRED_PROPERTIES = ['title', 'order', 'short_info'];
 
 class Landmark extends Parse.Object {
   constructor(attrs) {

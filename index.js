@@ -9,6 +9,9 @@ const Promise = require('bluebird');
 const express = require('express');
 const { ParseServer } = require('parse-server');
 const ParseDashboard = require('parse-dashboard');
+const path = require('path');
+
+const CLIENT_PATH = path.resolve(__dirname, 'client/dist');
 
 const app = express();
 
@@ -18,7 +21,6 @@ console.log(
 const parseAPI = new ParseServer(parseConfig); // init parse server
 
 // Mount express components
-// TODO: setup public serving of client
 app.use(parsePrefix, parseAPI);
 if (dashboardEnable) {
   // init parse dashboard
@@ -29,6 +31,12 @@ if (dashboardEnable) {
   app.use(parseDashboardPath, parseDashboard);
 }
 
+console.log(`Serving client files from ${CLIENT_PATH}...`);
+app.use(express.static(CLIENT_PATH)); // mount public files
+app.use((req, res) => {
+  // default route to send requests to frontend index for our SPA to handle
+  res.sendFile('index.html', { root: CLIENT_PATH });
+});
 /**
  * Start the application server. Will resolve once server is up
  * @returns {Promise}

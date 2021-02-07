@@ -1,0 +1,12 @@
+#layoutAuthentication {
+  background-color: #212529;
+  padding: 7em 2em;
+}
+
+.form-group {
+  max-width: 350px;
+}
+
+.invalid-feedback {
+  display: block;
+}
