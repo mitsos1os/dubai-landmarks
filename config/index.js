@@ -64,7 +64,7 @@ const {
     DB_URI: databaseURI = DEFAULT_DB_URI,
     SERVER_URL: serverURL,
     PUBLIC_SERVER_URL: publicServerURL,
-    SERVER_PORT,
+    PORT,
     FILE_KEY: fileKey,
     PHOTO_WIDTH,
     PHOTO_HEIGHT,
@@ -124,7 +124,7 @@ const parseBooleanEnvironment = (envVar, defaultValue = false) => {
 
 const genericConfig = {
   serverHost,
-  serverPort: parseIntEnvironment(SERVER_PORT, DEFAULT_PORT, 'SERVER_PORT'),
+  serverPort: parseIntEnvironment(PORT, DEFAULT_PORT, 'PORT'),
   serverProtocol,
   parsePrefix,
   parseDashboardPath,
