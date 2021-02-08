@@ -1,1 +1,1 @@
-web: npm run install-build-client && npm start
+web: npm start
