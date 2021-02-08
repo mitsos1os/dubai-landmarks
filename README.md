@@ -42,17 +42,25 @@ The application requires MongoDB instance to connect to for storing application 
 If you just need to run one for tests and you have `docker` installed you can run the following command:
 `docker run -p 27017:27017 mongo` which will spin up a mongodb server with its default 27017 exposed on the localhost interface
 
+For easier initialization a database script is provided in `scripts/db_seed.sh` which can be run to initialize the database with a few reference entities.
+
+It must be given the **Database connection URI** as well as the **File to import** and **target collection**
+
+**ex:** `DB_URI=mongodb://localhost:27017/dubai-landmarks ./scripts/db_seed.sh ./scripts/Landmark.json Landmark`
+
 ## Steps to locally install and run the project
 1. Clone the project using `git clone https://github.com/mitsos1os/dubai-landmarks.git`
-2. Make sure you have **Node V14-latest** available. If you don't you can install it using `nvm` or a method of your choice. 
+2. Make sure you have **Node V14-latest** available. If you don't, then you can install it using `nvm` or a method of your choice. 
 3. Make sure that you **provide a `.env` file in local root directory!** _(It is also required at build time for client to get built with proper environment information)_
 4. Run `npm install-build` which will install all necessary client-server dependencies and build frontend client
 5. RUN `npm start` and server will start on configured port where you can visit and test in your browser _(default `http://localhost:1337`)_
 
 ## Docker build
-Due to Parse Client backend being dynamically configured, in all docker builds you have to be careful to set the proper `PUBLIC_SERVER_URL` environment variable, which will define where the Parse client will client. For a simple build running locally for docker, this would have to be set up as the Docker Containers IP. ex: `172.17.0.2` _(if it is the first container running in a docker network with ip `172.17.0.0`)_
+Due to Parse Client backend being dynamically configured, in all docker builds you have to be careful to set the proper `PUBLIC_SERVER_URL` environment variable, which will define where the Parse client will connect. For a simple build running locally for docker, this would have to be set up as the Docker Containers IP. ex: `172.17.0.2` _(if it is the first container running in a docker network with ip `172.17.0.0`)_
 
-**Also please note that if you make changes to the `PUBLIC_SERVER_URL` or `APP_ID` environment variables in `.env` file, because these files are built into the client, it will need to be rebuilt in order to accept changes properly**
+**Also please note that if you make changes to the `PUBLIC_SERVER_URL` or `APP_ID` environment variables in `.env` file, because these files are built into the client, it will need to be rebuilt in order to accept changes properly**.
+
+_ex: `docker-compose up --build`_
 
 ### Dockerfile
 A `Dockerfile` is also provided which can be used to create a docker image of the provided repo. In order to build the image you have to run a simple `docker build -t <DESIRED_TAG_NAME> .` in the root directory of the repo.
@@ -72,6 +80,16 @@ DB_URI=mongodb://db:27017/dubai-landmarks
 # we have publised the server port to localhost in order for the browser to know where to send requests
 PUBLIC_SERVER_URL=http://localhost:1337/parse  
 ```
+
+## Production considerations
+This is mostly a **run-as-is** configuration. If we had to discuss about proper **production deployment** some optimizations should be considered. These would include:
+- Serving client static files _(js, html, css)_, should in no way be served from the NodeJS application server. A separate proxy server such as **Nginx** should take care of this optimally
+- Secure the application using TLS certificate for `https` browser access
+- When elements number increase, **pagination** should be implemented in order to better handle server and client resoures
+- Email service _(verification/forgot password etc...)_
+- Structured logging _(Winston/Pino/Bunyan)_
+- Up to date ParseServer and Client versions which could use the latest features such as `ClassLevelPermissions` setting in SDK and file hooks _(ex: `beforeFileSave`)_
+- Use rendering engine such as `pug` to write more productive HTML
 
 ### References
 _ref1_: [StartBootstrap clean blog theme](https://github.com/startbootstrap/startbootstrap-clean-blog)
