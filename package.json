@@ -16,7 +16,7 @@
     "install-build-client": "npm run install-client && npm run build-client"
   },
   "engines": {
-    "node": ">=14.15.0"
+    "node": "14.15.4"
   },
   "repository": {
     "type": "git",
