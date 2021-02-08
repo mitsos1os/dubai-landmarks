@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  db:
+    image: mongo:4
+  web:
+    build: .
+    image: dubai-landmarks
+    env_file: .env
+    ports:
+      - "1337:1337"
+    depends_on:
+      - db
