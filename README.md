@@ -51,6 +51,9 @@ If you just need to run one for tests and you have `docker` installed you can ru
 
 ## Docker build
 Due to Parse Client backend being dynamically configured, in all docker builds you have to be careful to set the proper `PUBLIC_SERVER_URL` environment variable, which will define where the Parse client will client. For a simple build running locally for docker, this would have to be set up as the Docker Containers IP. ex: `172.17.0.2` _(if it is the first container running in a docker network with ip `172.17.0.0`)_
+
+**Also please note that if you make changes to the `PUBLIC_SERVER_URL` or `APP_ID` environment variables in `.env` file, because these files are built into the client, it will need to be rebuilt in order to accept changes properly**
+
 ### Dockerfile
 A `Dockerfile` is also provided which can be used to create a docker image of the provided repo. In order to build the image you have to run a simple `docker build -t <DESIRED_TAG_NAME> .` in the root directory of the repo.
 
